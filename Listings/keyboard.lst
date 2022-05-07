@@ -1,0 +1,289 @@
+C51 COMPILER V9.59.0.0   KEYBOARD                                                          02/28/2021 19:44:49 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE KEYBOARD
+OBJECT MODULE PLACED IN .\Objects\keyboard.obj
+COMPILER INVOKED BY: D:\ruanjian\danpianji\C51\BIN\C51.EXE keyboard.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND 
+                    -PRINT(.\Listings\keyboard.lst) TABS(2) OBJECT(.\Objects\keyboard.obj)
+
+line level    source
+
+   1          #include <stc8.h>
+   2          #include "delay.h"
+   3          #include "lcd_12864.h"
+   4          #include "keyboard.h"
+   5          
+   6          #define uchar unsigned char
+   7          #define uint unsigned int
+   8            
+   9          
+  10          
+  11          unsigned char i, j;
+  12          extern uchar key;
+  13          long unsigned int password1 = 111111 ;   //定义初始密码
+  14          long unsigned int password2 = 0;         //储存用户输入的密码
+  15          unsigned int d = 0;                      //输入位数d（d = 5是就输入1了六位）
+  16          
+  17          uchar key_scan()
+  18          {
+  19   1            uchar num_key;
+  20   1      
+  21   1          //检测第2行，给第2行低电平
+  22   1            P2=0xef;          
+  23   1            num_key=P2;
+  24   1            num_key=num_key&0x0f;
+  25   1            if(num_key!=0x0f)
+  26   1              {
+  27   2                Delay_Ms(40);
+  28   2                num_key=P2;
+  29   2                num_key=num_key&0x0f;
+  30   2                while(num_key!=0x0f)
+  31   2                {
+  32   3                  num_key=P2;
+  33   3                switch(num_key)
+  34   3                  {
+  35   4                    case 0xee:key=1;
+  36   4                      break;
+  37   4                    case 0xed:key=2;
+  38   4                      break;
+  39   4                    case 0xeb:key=3;
+  40   4                      break;
+  41   4                    case 0xe7:key=10;break; //up
+  42   4                      
+  43   4                  }
+  44   3                while(num_key!=0x0f)
+  45   3                  {
+  46   4                    num_key=P2;
+  47   4                    num_key=num_key&0x0f;
+  48   4                  }
+  49   3                }
+  50   2              }
+  51   1      
+  52   1            P2=0xdf;
+  53   1            num_key=P2;
+  54   1            num_key=num_key&0x0f;
+C51 COMPILER V9.59.0.0   KEYBOARD                                                          02/28/2021 19:44:49 PAGE 2   
+
+  55   1            while(num_key!=0x0f)
+  56   1              {
+  57   2                Delay_Ms(40);
+  58   2                num_key=P2;
+  59   2                num_key=num_key&0x0f;
+  60   2                while(num_key!=0x0f)
+  61   2                {
+  62   3                  num_key=P2;
+  63   3                switch(num_key)
+  64   3                  {
+  65   4                    case 0xde:key=4;
+  66   4                      break;
+  67   4                    case 0xdd:key=5;
+  68   4                      break;
+  69   4                    case 0xdb:key=6;
+  70   4                      break;
+  71   4                    case 0xd7:key=11;//down
+  72   4                  }
+  73   3                while(num_key!=0x0f)
+  74   3                  {
+  75   4                    num_key=P2;
+  76   4                    num_key=num_key&0x0f;
+  77   4                  }
+  78   3                }
+  79   2              }
+  80   1      
+  81   1      
+  82   1            P2=0xbf;
+  83   1            num_key=P2;
+  84   1            num_key=num_key&0x0f;
+  85   1            while(num_key!=0x0f)
+  86   1              {
+  87   2                Delay_Ms(40);
+  88   2                num_key=P2;
+  89   2                num_key=num_key&0x0f;
+  90   2                while(num_key!=0x0f)
+  91   2                {
+  92   3                  num_key=P2;
+  93   3                switch(num_key)
+  94   3                  {
+  95   4                    case 0xbe:key=7;
+  96   4                      break;
+  97   4                    case 0xbd:key=8;
+  98   4                      break;
+  99   4                    case 0xbb:key=9;
+ 100   4                      break;
+ 101   4                    case 0xb7:key=14;//esc
+ 102   4                  }
+ 103   3                while(num_key!=0x0f)
+ 104   3                  {
+ 105   4                    num_key=P2;
+ 106   4                    num_key=num_key&0x0f;
+ 107   4                  }
+ 108   3                }
+ 109   2              }
+ 110   1      
+ 111   1      
+ 112   1            P2=0x7f;
+ 113   1            num_key=P2;
+ 114   1            num_key=num_key&0x0f;
+ 115   1            while(num_key!=0x0f)
+ 116   1              {
+C51 COMPILER V9.59.0.0   KEYBOARD                                                          02/28/2021 19:44:49 PAGE 3   
+
+ 117   2                Delay_Ms(40);
+ 118   2                num_key=P2;
+ 119   2                num_key=num_key&0x0f;
+ 120   2                while(num_key!=0x0f)
+ 121   2                {
+ 122   3                  num_key=P2;
+ 123   3                switch(num_key)
+ 124   3                  {
+ 125   4                    case 0x7e:key=12;break;//left
+ 126   4                    case 0x7d:key=0;break;
+ 127   4                    case 0x7b:key=13;//right
+ 128   4                    case 0x77:key=15;break;//ent
+ 129   4                  }
+ 130   3                while(num_key!=0x0f)
+ 131   3                  {
+ 132   4                    num_key=P2;
+ 133   4                    num_key=num_key&0x0f;
+ 134   4                  }
+ 135   3                }
+ 136   2              }
+ 137   1      return key;
+ 138   1      
+ 139   1      }
+ 140          
+ 141          
+ 142          
+ 143          
+ 144          
+ 145          
+ 146          
+ 147          
+ 148          
+ 149          void key_disaplay()
+ 150          {
+ 151   1        switch(key){
+ 152   2         
+ 153   2          case 1:  //按下1
+ 154   2            //ClrScreen();      
+ 155   2             LCD_PutString(d,2,"1");
+ 156   2            Delay_Ms(5000);
+ 157   2            d++;        // d = 0 -->  d = 1
+ 158   2            password2 = password2 * 10 + 1;
+ 159   2            break;
+ 160   2          case 2:  //按下2
+ 161   2             LCD_PutString(d,2,"2");
+ 162   2             Delay_Ms(5000);
+ 163   2             d++;        
+ 164   2             password2 = password2 * 10 + 2;
+ 165   2             break;
+ 166   2          case 3:  //按下3
+ 167   2             LCD_PutString(d,2,"3");
+ 168   2            Delay_Ms(5000);
+ 169   2            d++;        
+ 170   2            password2 = password2 * 10 + 3;
+ 171   2            break;
+ 172   2          case 4:  //按下4
+ 173   2             LCD_PutString(d,2,"4");
+ 174   2            Delay_Ms(5000);
+ 175   2            d++;        // d = 0 -->  d = 1
+ 176   2            password2 = password2 * 10 + 4;
+ 177   2            break;
+ 178   2          case 5:  //按下5
+C51 COMPILER V9.59.0.0   KEYBOARD                                                          02/28/2021 19:44:49 PAGE 4   
+
+ 179   2             LCD_PutString(d,2,"5");
+ 180   2            Delay_Ms(5000);
+ 181   2            d++;        // d = 0 -->  d = 1
+ 182   2            password2 = password2 * 10 + 5;
+ 183   2            break;
+ 184   2          case 6:  //按下6
+ 185   2             LCD_PutString(d,2,"6");
+ 186   2            Delay_Ms(5000);
+ 187   2            d++;        // d = 0 -->  d = 1
+ 188   2            password2 = password2 * 10 + 6;
+ 189   2            break;
+ 190   2          case 7:  //按下7
+ 191   2             LCD_PutString(d,2,"7");
+ 192   2            Delay_Ms(5000);
+ 193   2            d++;        // d = 0 -->  d = 1
+ 194   2            password2 = password2 * 10 + 7;
+ 195   2            break;
+ 196   2          case 8:
+ 197   2             LCD_PutString(d,2,"8");
+ 198   2             Delay_Ms(5000);
+ 199   2             d++;
+ 200   2             P55 = 0;       Delay_Ms(50);  P55 = 1;
+ 201   2             password2 = password2 * 10 + 6;
+ 202   2          case 9:
+ 203   2             LCD_PutString(d,2,"9");
+ 204   2            Delay_Ms(5000);
+ 205   2            d++;
+ 206   2            password2 = password2 * 10 + 9;
+ 207   2          case 10: 
+ 208   2            break;//up
+ 209   2          case 11: 
+ 210   2            break;//down
+ 211   2          case 12: 
+ 212   2            break;//left
+ 213   2          case 13:
+ 214   2            break;//right
+ 215   2          case 14: 
+ 216   2            break;//esc
+ 217   2          case 15:   
+ 218   2            break;//ent
+ 219   2          
+ 220   2              }
+ 221   1      
+ 222   1      
+ 223   1           
+ 224   1          
+ 225   1            
+ 226   1          if(d > 5){    
+ 227   2          
+ 228   2            d = 0;
+ 229   2            if(password2 == password1){
+ 230   3      //        lock = 1;    开锁
+ 231   3              ClrScreen();
+ 232   3              LCD_PutString(0,2,"    请通行"); 
+ 233   3              P55 = 0;        Delay_Ms(500);  P55 = 1; 
+ 234   3              
+ 235   3              }
+ 236   2            else {
+ 237   3              ClrScreen();
+ 238   3              LCD_PutString(0,1,"密码错误");
+ 239   3              Delay_Ms(1000);
+ 240   3              LCD_PutString(0,2,"请重新输入密码");
+C51 COMPILER V9.59.0.0   KEYBOARD                                                          02/28/2021 19:44:49 PAGE 5   
+
+ 241   3              Delay_Ms(30000);
+ 242   3              
+ 243   3              ClrScreen();
+ 244   3              LCD_PutString(0, 1, "请输入密码：");
+ 245   3                      
+ 246   3            }
+ 247   2            password2 = 0;    
+ 248   2          }
+ 249   1      }
+ 250          
+ 251          
+ 252          
+ 253          
+ 254          
+ 255          
+ 256          
+ 257          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1267    ----
+   CONSTANT SIZE    =     66    ----
+   XDATA SIZE       =     12       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

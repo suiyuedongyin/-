@@ -1,0 +1,9 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\lcd_12864.obj",
+".\Objects\delay.obj",
+".\Objects\keyboard.obj",
+".\Objects\uart.obj",
+".\Objects\FPM10A.obj" 
+TO ".\Objects\kaoqinji" 
+PRINT(".\Listings\kaoqinji.m51") RAMSIZE(256) 
